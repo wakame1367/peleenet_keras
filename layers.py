@@ -1,4 +1,5 @@
-from keras.layers import Conv2D, BatchNormalization, Concatenate, ReLU
+from keras.layers import (Conv2D, BatchNormalization, Concatenate, ReLU,
+                          MaxPooling2D, AveragePooling2D)
 
 
 def dense_block(x, growth_rate, bottleneck_width=4, name="2way-dense-layer"):
@@ -46,3 +47,41 @@ def conv_block(inputs, out_channels, kernel_size, strides, padding,
     if activation:
         x = ReLU()(x)
     return x
+
+
+def stem_block(inputs, num_init_features):
+    """
+
+    :return:
+    """
+    x = inputs
+    #
+    stem1 = conv_block(x, num_init_features, kernel_size=3, strides=2,
+                       padding="same")
+    stem2 = conv_block(stem1, int(num_init_features / 2), kernel_size=1,
+                       strides=1,
+                       padding="valid")
+    stem2 = conv_block(stem2, num_init_features, kernel_size=3, strides=2,
+                       padding="same")
+    #
+    max_pooling_2d = MaxPooling2D(pool_size=(2, 2), strides=2)
+    stem1 = max_pooling_2d(stem1)
+    concat = Concatenate()([stem1, stem2])
+    stem3 = conv_block(concat, num_init_features, kernel_size=1, strides=1,
+                       padding="valid")
+
+    return stem3
+
+
+def transition_block(inputs, num_filter, with_polling=True):
+    x = inputs
+    conv = conv_block(x, num_filter, kernel_size=1, strides=1,
+                      padding="valid")
+    if with_polling:
+        average_polling_2d = AveragePooling2D(pool_size=(2, 2), strides=2)
+        # max_pooling_2d = MaxPooling2D(pool_size=(2, 2), strides=2)
+        pooling = average_polling_2d(conv)
+        out = pooling
+    else:
+        out = conv
+    return out
