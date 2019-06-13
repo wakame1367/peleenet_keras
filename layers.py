@@ -2,7 +2,7 @@ from keras.layers import (Conv2D, BatchNormalization, Concatenate, ReLU,
                           MaxPooling2D, AveragePooling2D)
 
 
-def dense_block(x, growth_rate, bottleneck_width=4, name="2way-dense-layer"):
+def dense_layer(x, growth_rate, bottleneck_width=4, name="2way-dense-layer"):
     """ 3-way inputs
     1. right: conv_block_1
     2. middle: raw_output from previous_layer
