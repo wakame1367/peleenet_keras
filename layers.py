@@ -34,6 +34,13 @@ def dense_layer(x, growth_rate, bottleneck_width=4, name="2way-dense-layer"):
     return _out
 
 
+def dense_block(x, num_layers, growth_rate, bn_size):
+    inputs = x
+    for layer_idx in range(num_layers):
+        inputs = dense_layer(inputs, growth_rate, bn_size)
+    return inputs
+
+
 def conv_block(inputs, out_channels, kernel_size, strides, padding,
                activation=True):
     x = inputs
