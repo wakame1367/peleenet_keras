@@ -30,7 +30,7 @@ def pelee_net(input_shapes=(3, 224, 224), growth_rate=32, num_init_features=32,
         out = transition_block(out, total_filter, with_polling=with_pooling)
         _stem_block = out
 
-    out = AveragePooling2D(pool_size=(7, 7))
+    out = AveragePooling2D(pool_size=(7, 7))(_stem_block)
     out = Flatten()(out)
     # TODO
     # add Dropout?
