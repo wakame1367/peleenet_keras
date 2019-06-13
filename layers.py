@@ -1,3 +1,4 @@
+import keras.backend as K
 from keras.layers import (Conv2D, BatchNormalization, Concatenate, ReLU,
                           MaxPooling2D, AveragePooling2D)
 
@@ -10,9 +11,14 @@ def dense_layer(x, growth_rate, bottleneck_width=4, name="2way-dense-layer"):
 
     :return:
     """
+    num_input_features = K.int_shape(x)[-1]
     _middle = x
     _growth_rate = int(growth_rate / 2)
     _inter_channel = int(_growth_rate * bottleneck_width / 4) * 4
+
+    if _inter_channel > num_input_features / 2:
+        _inter_channel = int(num_input_features / 8) * 4
+        print('adjust inter_channel to ', _inter_channel)
 
     #
     conv_block_left1 = conv_block(x, _inter_channel, kernel_size=1, strides=1,
