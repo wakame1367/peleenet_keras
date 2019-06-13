@@ -22,7 +22,7 @@ def pelee_net(input_shapes=(3, 224, 224), growth_rate=32, num_init_features=32,
                           bn_size=bottleneck_width, growth_rate=growth_rate)
         total_filter += growth_rate * block_config
 
-        if idx == len(block_config) - 1:
+        if idx == len(block_configs) - 1:
             with_pooling = False
         else:
             with_pooling = True
