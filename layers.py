@@ -98,3 +98,16 @@ def transition_block(inputs, num_filter, with_polling=True):
     else:
         out = conv
     return out
+
+
+def basic_conv_block(inputs, out_channels, kernel_size, strides, padding,
+                     activation=True):
+    x = inputs
+    x = Conv2D(
+        out_channels, kernel_size=kernel_size, strides=strides,
+        padding=padding, use_bias=False)(x)
+    x = BatchNormalization()(x)
+    if activation:
+        x = ReLU()(x)
+
+    return x
