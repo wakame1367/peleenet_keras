@@ -1,6 +1,6 @@
 from keras.layers import Input, AveragePooling2D, Dense, Flatten
 from keras.models import Model
-from layers import stem_block, dense_block, transition_block
+from layers import stem_block, dense_block, transition_block, basic_conv_block
 
 
 def pelee_net(input_shapes=(3, 224, 224), growth_rate=32, num_init_features=32,
@@ -21,13 +21,12 @@ def pelee_net(input_shapes=(3, 224, 224), growth_rate=32, num_init_features=32,
         out = dense_block(_stem_block, num_layers=block_config,
                           bn_size=bottleneck_width, growth_rate=growth_rate)
         total_filter += growth_rate * block_config
+        out = basic_conv_block(out, total_filter, kernel_size=1, strides=1,
+                               padding="valid")
 
         if idx == len(block_configs) - 1:
-            with_pooling = False
-        else:
-            with_pooling = True
-
-        out = transition_block(out, total_filter, with_polling=with_pooling)
+            out = AveragePooling2D(pool_size=2, strides=2)(out)
+        # out = transition_block(out, total_filter, with_polling=with_pooling)
         _stem_block = out
 
     out = AveragePooling2D(pool_size=(7, 7))(_stem_block)
