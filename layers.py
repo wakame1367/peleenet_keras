@@ -29,7 +29,7 @@ def dense_layer(x, growth_rate, bottleneck_width=4, name="2way-dense-layer"):
 
     #
     conv_block_right1 = conv_block(x, _inter_channel, kernel_size=1, strides=1,
-                                   padding="valid", )
+                                   padding="valid")
     conv_block_right2 = conv_block(conv_block_right1, _growth_rate,
                                    kernel_size=3, strides=1,
                                    padding="same")
