@@ -54,13 +54,14 @@ if __name__ == '__main__':
     num_classes = 10
     batch_size = 32
     epochs = 100
+    input_shapes = (3, 32, 32)
     x_train, x_test, y_train, y_test = prepare_dataset(num_classes)
 
     log_path = Path("logs")
     if not log_path.exists():
         log_path.mkdir()
 
-    model = pelee_net()
+    model = pelee_net(input_shapes=input_shapes)
     model.summary()
 
     checkpoint_name = "weights.{epoch:02d}-{val_loss:.2f}.hdf5"
