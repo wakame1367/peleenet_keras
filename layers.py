@@ -36,7 +36,7 @@ def dense_layer(x, growth_rate, bottleneck_width=4, name="2way-dense-layer"):
     conv_block_right3 = conv_block(conv_block_right2, _growth_rate,
                                    kernel_size=3, strides=1,
                                    padding="same")
-    _out = Concatenate()([_middle, conv_block_right3, conv_block_left2])
+    _out = Concatenate(axis=1)([_middle, conv_block_right3, conv_block_left2])
     return _out
 
 
@@ -79,7 +79,7 @@ def stem_block(inputs, num_init_features):
     #
     max_pooling_2d = MaxPooling2D(pool_size=(2, 2), strides=2)
     stem1 = max_pooling_2d(stem1)
-    concat = Concatenate()([stem1, stem2])
+    concat = Concatenate(axis=1)([stem1, stem2])
     stem3 = conv_block(concat, num_init_features, kernel_size=1, strides=1,
                        padding="valid")
 
