@@ -1,3 +1,4 @@
+import argparse
 import matplotlib.pyplot as plt
 from pathlib import Path
 
@@ -7,6 +8,14 @@ from keras.utils import to_categorical
 from keras.callbacks import ModelCheckpoint, EarlyStopping, TensorBoard
 
 from models import pelee_net
+
+
+def get_arguments():
+    _parser = argparse.ArgumentParser()
+    _parser.add_argument("--epochs", default=100, type=int)
+    _parser.add_argument("--batch_size", default=32, type=int)
+    _args = _parser.parse_args()
+    return _args
 
 
 def prepare_dataset(num_classes=10):
@@ -50,10 +59,8 @@ def plot_history(history):
 
 
 if __name__ == '__main__':
-
+    args = get_arguments()
     num_classes = 10
-    batch_size = 32
-    epochs = 100
     input_shapes = (3, 32, 32)
     x_train, x_test, y_train, y_test = prepare_dataset(num_classes)
 
@@ -76,8 +83,8 @@ if __name__ == '__main__':
                   metrics=['accuracy'])
 
     history = model.fit(x_train, y_train,
-                        batch_size=batch_size,
-                        epochs=epochs,
+                        batch_size=args.batch_size,
+                        epochs=args.epochs,
                         validation_data=(x_test, y_test),
                         shuffle=True,
                         callbacks=[checkpoint, early_stop, tensorboard])
