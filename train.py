@@ -4,7 +4,7 @@ from pathlib import Path
 from keras.optimizers import Adam
 from keras.datasets import cifar10
 from keras.utils import to_categorical
-from keras.callbacks import ModelCheckpoint, EarlyStopping
+from keras.callbacks import ModelCheckpoint, EarlyStopping, TensorBoard
 
 from models import pelee_net
 
@@ -70,6 +70,7 @@ if __name__ == '__main__':
                                  save_best_only=True)
     early_stop = EarlyStopping(monitor='val_acc', min_delta=0, patience=200,
                                verbose=1, mode='auto')
+    tensorboard = TensorBoard(log_dir=str(log_path))
 
     model.compile(loss='categorical_crossentropy', optimizer=Adam(1e-5),
                   metrics=['accuracy'])
@@ -78,5 +79,6 @@ if __name__ == '__main__':
                         batch_size=batch_size,
                         epochs=epochs,
                         validation_data=(x_test, y_test),
-                        shuffle=True)
+                        shuffle=True,
+                        callbacks=[checkpoint, early_stop, tensorboard])
     plot_history(history)
