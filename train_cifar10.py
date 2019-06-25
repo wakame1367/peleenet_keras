@@ -2,10 +2,11 @@ import argparse
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-from keras.optimizers import Adam
-from keras.datasets import cifar10
-from keras.utils import to_categorical
-from keras.callbacks import ModelCheckpoint, EarlyStopping, TensorBoard
+from tensorflow.python.keras.optimizers import Adam
+from tensorflow.python.keras.datasets import cifar10
+from tensorflow.python.keras.utils import to_categorical
+from tensorflow.python.keras.callbacks import (ModelCheckpoint, EarlyStopping,
+                                               TensorBoard)
 
 from models import pelee_net
 
