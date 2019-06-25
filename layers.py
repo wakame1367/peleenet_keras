@@ -26,7 +26,7 @@ def dense_block(x, num_layers, growth_rate, bottleneck_width=4):
         conv_block_right3 = conv_block(conv_block_right2, growth_rate,
                                        kernel_size=3, strides=1,
                                        padding="same")
-        out = Concatenate()(
+        out = Concatenate(axis=1)(
             [middle, conv_block_right3, conv_block_left2])
     return out
 
