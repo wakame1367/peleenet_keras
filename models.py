@@ -6,8 +6,7 @@ from layers import stem_block, dense_block, transition_block, basic_conv_block
 
 
 def pelee_net(input_shapes=(3, 224, 224), growth_rate=32, num_init_features=32,
-              block_configs=None, bottleneck_widths=None, num_classes=10,
-              drop_rate=0.5):
+              block_configs=None, bottleneck_widths=None, num_classes=10):
     if bottleneck_widths is None:
         bottleneck_widths = [1, 2, 4, 4]
     if block_configs is None:
@@ -32,7 +31,6 @@ def pelee_net(input_shapes=(3, 224, 224), growth_rate=32, num_init_features=32,
         _stem_block = out
 
     out = GlobalAveragePooling2D()(_stem_block)
-    out = Dropout(rate=drop_rate)(out)
     outputs = Dense(num_classes, activation="softmax")(out)
     model = Model(inputs=x, outputs=outputs)
 
